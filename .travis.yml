@@ -13,6 +13,9 @@ addons:
     - libboost-all-dev
     - libboost-test-dev
 
+install:
+  - export CXX="g++-5"
+
 # need to install the Boost libraries to the sandbox
 #before_script:
 #  - sudo apt-get update -qq
