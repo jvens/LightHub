@@ -1,7 +1,8 @@
 language: cpp
 compiler:
   - gcc
-script: make -j4 && make test -j4
+script: make -j4
+#&& make test -j4
 
 addons:
   apt:
@@ -12,6 +13,8 @@ addons:
     - g++-5
     - libboost-all-dev
     - libboost-test-dev
+    - libasound-dev
+    - libfftw3-dev
 
 install:
   - export CXX="g++-5"
