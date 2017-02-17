@@ -1,0 +1,42 @@
+language: cpp
+compiler:
+  - gcc
+script: make -j4
+#&& make test -j4
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+    - libboost-all-dev
+    - libboost-test-dev
+    - libasound-dev
+    - libportaudio-dev
+    - libfftw3-dev
+
+install:
+  - export CXX="g++-5"
+
+# need to install the Boost libraries to the sandbox
+#before_script:
+#  - sudo apt-get update -qq
+#  - sudo apt-get install libboost-all-dev libboost-test-dev
+#  - sudo apt-get install g++-5 -y
+  
+#env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+#  addons:
+#    apt:
+#      packages:
+#        - g++-5
+#      sources: &sources
+#        - llvm-toolchain-precise-3.8
+#        - ubuntu-toolchain-r-test
+
+notifications:
+  email:
+    recipients: jeramie.vens@gmail.com
+    on_success: change
+    on_failure: always

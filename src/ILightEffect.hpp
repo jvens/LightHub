@@ -29,6 +29,7 @@ protected:
 	friend Rhopalia;
 
 	//Slots
+	// update function called 50 times a second
 	virtual void update() = 0;
 
 	std::vector<std::shared_ptr<LightNode>> nodes;

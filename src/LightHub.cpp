@@ -1,4 +1,5 @@
 #include "LightHub.hpp"
+#include "debug.h"
 
 using namespace std;
 
@@ -26,11 +27,9 @@ LightHub::LightHub(uint16_t _sendPort, uint16_t _recvPort, DiscoveryMethod_e _di
 	//Start listening for packets
 	startListening();
 
-	std::cout << "[Info] LightHub::LightHub: Now listening for packets"
-		<< std::endl;
+	debug << "Now listening for packets" << std::endl;
 
-	std::cout << "[Info] LightHub::LightHub: Performing initial network "
-		"discovery" << std::endl;
+	debug << "Performing initial network discovery" << std::endl;
 
 	//Do an initial node discovery
 	discover(discoveryMethod);
@@ -55,7 +54,7 @@ void LightHub::threadRoutine() {
 	//Run all async tasks
 	ioService.run();
 
-	std::cout << "[Info] LightHub: Thread closing" << std::endl;
+	debug << "Thread closing" << std::endl;
 }
 
 
@@ -63,7 +62,7 @@ void LightHub::discover(LightHub::DiscoveryMethod_e method) {
 
 	switch(method) {
 		case SWEEP:
-			std::cout << "[Error] LightHub::discover method 'SWEEP' "
+			err << "discover method 'SWEEP' "
 				<< "not implemented" << std::endl;
 		break;
 
@@ -144,15 +143,14 @@ size_t LightHub::getConnectedNodeCount() const {
 void LightHub::handleSendBroadcast(const boost::system::error_code& ec,
 	size_t) {
 	if(ec) {
-		std::cout << "[Error] Failed to send broadcast ping message: "
+		err << "Failed to send broadcast ping message: "
 			<< ec.message() << std::endl;
 	}
 }
 
 void LightHub::handleDiscoveryTimer(const boost::system::error_code& ec) {
 	if(ec) {
-		std::cout << "[Error] LightHub::handleDiscoveryTimer: "
-			<< ec.message() << std::endl;
+		err << ec.message() << std::endl;
 	}
 	else {
 		//Perform discovery
@@ -179,7 +177,7 @@ void LightHub::handleReceive(const boost::system::error_code& ec,
 	size_t bytesTransferred) {
 	
 	if(ec) {
-		std::cout << "[Error] Failed to receive from UDP socket" << std::endl;
+		err << "Failed to receive from UDP socket" << std::endl;
 	}
 	else {
 		Packet p;
@@ -193,12 +191,12 @@ void LightHub::handleReceive(const boost::system::error_code& ec,
 			if(e.getErrorCode() == Packet::PACKET_INVALID_HEADER ||
 					e.getErrorCode() == Packet::PACKET_INVALID_SIZE) {
 				//Might be from some other application, we can ignore
-				std::cout << "[Warning] LightHub::handleReceive: Invalid datagram "
+				warning << "Invalid datagram "
 					"received from " << receiveEndpoint.address() << std::endl;
 			}
 			else {
 				//Weird!
-				std::cout << "[Error] LightHub::handleReceive: Exception caught: "
+				err << "Exception caught: "
 					<< e.what() << std::endl;
 			}
 		}
@@ -238,7 +236,7 @@ void LightHub::handleReceive(const boost::system::error_code& ec,
 			}
 			else {
 				//Some other error occurred
-				std::cout << "[Error] LightHub::handleReceive: Exception thrown: "
+				err << "Exception thrown: "
 					<< e.what() << std::endl;
 			}
 		}
