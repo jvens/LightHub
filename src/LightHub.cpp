@@ -5,8 +5,7 @@ using namespace std;
 
 LightHub::LightHub(uint16_t _sendPort, uint16_t _recvPort, DiscoveryMethod_e _discoveryMethod,
 	uint32_t _discoveryPeriod)
-	:	sendSocket(ioService, boost::asio::ip::udp::endpoint(
-			boost::asio::ip::udp::v4(), _sendPort))
+	:	sendSocket(ioService, boost::asio::ip::udp::v4())
 	,	recvSocket(ioService, boost::asio::ip::udp::endpoint(
 			boost::asio::ip::udp::v4(), _recvPort))
 	,	discoveryTimer(ioService)	{
@@ -17,6 +16,9 @@ LightHub::LightHub(uint16_t _sendPort, uint16_t _recvPort, DiscoveryMethod_e _di
 
 	//Allow the socket to send broadcast packets
 	sendSocket.set_option(boost::asio::socket_base::broadcast(true));
+	sendSocket.set_option(boost::asio::socket_base::reuse_address(true));
+
+	recvSocket.set_option(boost::asio::socket_base::reuse_address(true));
 	
 	//Construct the work unit for the io_service
 	ioWork.reset(new boost::asio::io_service::work(ioService));
