@@ -9,14 +9,15 @@ void slotNodeDiscover(std::shared_ptr<LightNode>);
 void slotNodeStateChange(LightNode*, LightNode::State_e, LightNode::State_e);
 
 //std::shared_ptr<LightEffectSoundSolid> effect;
-std::shared_ptr<LightEffectFade> effect;
+//std::shared_ptr<LightEffectFade> effect;
+std::shared_ptr<ILightEffect> effect;
 
 int main() {
 
 
 	//Add the effect to the controller
 	//controller.addEffect(effectFade);
-/*	
+	
 	//Create an audio device
 	std::shared_ptr<AudioDevice> audioDevice =
 		std::make_shared<AudioDevice>(AudioDevice::DEFAULT_DEVICE, 48000, 1024);
@@ -27,9 +28,9 @@ int main() {
 
 	//Configure SoundColor settings
 	SoundColorSettings scs;
-	scs.bassFreq = 150.;
+	scs.bassFreq = 1000.;
 	scs.trebbleFreq = 4000.;
-	scs.bassBoost = 10.;
+	scs.bassBoost = 20.;
 	scs.trebbleBoost = 0.;
 	scs.fStart = 0;
 	scs.fEnd = 20000;
@@ -46,9 +47,11 @@ int main() {
 	//Create a SoundColor
 	//SoundColor soundColor(spectrumAnalyzer, scs);
 
-	effect = std::make_shared<LightEffectSoundSolid>(spectrumAnalyzer, scs);
-*/
-	effect = std::make_shared<LightEffectFade>(1., 1.);
+	effect = std::make_shared<LightEffectSoundMove>(spectrumAnalyzer, scs);
+
+//	effect = std::make_shared<LightEffectFade>(1., 1.);
+
+//	effect = std::make_shared<LightEffectChase>(Color(255,0,0), Color(0,0,255), 100);
 
 	Rhopalia controller;
 
@@ -56,7 +59,7 @@ int main() {
 
 	controller.addEffect(effect);
 	//Start the audio device
-	//audioDevice->startStream();
+	audioDevice->startStream();
 
 
 

@@ -11,6 +11,7 @@
 #include "LightEffectSolid.hpp"
 #include "LightEffectFade.hpp"
 #include "LightEffectSoundSolid.hpp"
+#include "LightEffectSoundMove.hpp"
 #include "LightEffectChase.hpp"
 
 #include "SoundColor.hpp"
